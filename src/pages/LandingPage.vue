@@ -20,7 +20,7 @@
           @click="drawer = true"
         />
         <a href="#hero" class="brand-link d-flex align-center gap-2" @click.prevent="scrollToSection('hero')">
-          <img src="/logo.png" alt="SUFRAH FOODS سفرہ" class="header-logo" width="48" height="48" />
+          <img src="/sufra.png" alt="SUFRAH FOODS سفرہ" class="header-logo" width="88" height="88" />
           <span class="text-h5 font-weight-bold brand-name">SUFRAH FOODS</span>
           <span class="urdu ms-1" lang="ur" aria-hidden="true">سفرہ</span>
         </a>
@@ -356,7 +356,7 @@
         <v-row align="center" justify="space-between">
           <v-col cols="12" md="auto" class="text-center text-md-start">
             <div class="d-flex align-center justify-center justify-md-start gap-2 flex-wrap">
-              <img src="/logo.png" alt="SUFRAH FOODS سفرہ" class="footer-logo" width="40" height="40" />
+              <img src="/sufra.png" alt="SUFRAH FOODS سفرہ" class="footer-logo" width="72" height="72" />
               <span class="text-h6 font-weight-bold text-deep-green">SUFRAH FOODS</span>
               <span class="urdu" lang="ur">سفرہ</span>
             </div>
