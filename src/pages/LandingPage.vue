@@ -5,11 +5,14 @@
 -->
 <template>
   <div class="landing">
+    <div class="bg-glow bg-glow-1" aria-hidden="true" />
+    <div class="bg-glow bg-glow-2" aria-hidden="true" />
+
     <!-- 1) Sticky Header -->
     <v-app-bar
       class="app-bar"
       elevation="0"
-      height="72"
+      height="92"
       sticky
       scrolled
     >
@@ -82,8 +85,10 @@
       <v-container>
         <v-row align="center">
           <v-col cols="12" md="7" class="hero-content">
-            <div class="reveal" :class="{ visible: revealed.hero }">
-              <p class="text-overline text-deep-green mb-2">Premium Homemade</p>
+            <div class="reveal hero-copy" :class="{ visible: revealed.hero }">
+              <v-chip size="small" color="accent" class="mb-4 hero-chip" label>
+                Premium Homemade Lahore
+              </v-chip>
               <h1 id="hero-heading" class="text-h3 text-md-h2 font-weight-bold mb-4 text-deep-green">
                 Homemade Food, Made with Care
               </h1>
@@ -144,7 +149,7 @@
         </p>
         <v-row class="reveal" :class="{ visible: revealed.menu }">
           <v-col v-for="item in menuItems" :key="item.id" cols="12" md="6">
-            <v-card class="menu-card fill-height" elevation="2">
+            <v-card class="menu-card fill-height premium-card" elevation="2">
               <v-card-text class="pa-6">
                 <div class="d-flex align-center mb-3">
                   <span class="menu-icon me-3" v-html="item.icon" aria-hidden="true" />
@@ -183,7 +188,7 @@
         <v-row justify="center" class="reveal" :class="{ visible: revealed.deals }">
           <v-col v-for="(pack, i) in dealPacks" :key="pack.size" cols="12" sm="6" md="4">
             <v-card
-              class="deal-card fill-height"
+              class="deal-card fill-height premium-card"
               :class="{ 'deal-card-highlight': pack.highlight }"
               elevation="2"
             >
@@ -210,7 +215,7 @@
         </h2>
         <v-row class="reveal" :class="{ visible: revealed.reviews }">
           <v-col v-for="(r, i) in reviews" :key="i" cols="12" sm="6" md="4">
-            <v-card class="review-card fill-height" elevation="2">
+            <v-card class="review-card fill-height premium-card" elevation="2">
               <v-card-text class="pa-5">
                 <StarRating :count="r.stars" class="mb-2" />
                 <p class="text-body-2 text-brown">{{ r.text }}</p>
@@ -284,7 +289,7 @@
         </h2>
         <v-row class="reveal" :class="{ visible: revealed.contact }">
           <v-col cols="12" md="6" class="d-flex align-center justify-center">
-            <v-sheet class="whatsapp-cta pa-8 rounded-lg text-center" color="primary">
+            <v-sheet class="whatsapp-cta pa-8 rounded-lg text-center premium-cta" color="primary">
               <p class="text-h5 font-weight-bold text-white mb-4">Order on WhatsApp</p>
               <p class="text-body-2 text-white mb-4">Quick, easy, and we respond fast.</p>
               <v-btn
@@ -303,7 +308,7 @@
             </v-sheet>
           </v-col>
           <v-col cols="12" md="6">
-            <v-card class="contact-form-card" elevation="2">
+            <v-card class="contact-form-card premium-card" elevation="2">
               <v-card-text class="pa-6">
                 <v-form ref="formRef" @submit.prevent="onSubmit">
                   <v-text-field
@@ -549,6 +554,8 @@ export default {
             <p class="text-h6 font-weight-bold text-deep-green mb-1">Samosas • Rolls</p>
             <p class="text-body-2 text-brown mb-2">&amp; more from our kitchen</p>
             <div class="hero-card-visual mt-4" aria-hidden="true">
+              <span class="hero-card-blob hero-card-blob-1"></span>
+              <span class="hero-card-blob hero-card-blob-2"></span>
               <span class="visually-hidden">Homemade food</span>
             </div>
           </div>
@@ -595,121 +602,231 @@ export default {
 
 <style scoped>
 .landing {
-  background: linear-gradient(180deg, #F7F1E8 0%, #efe8dc 100%);
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(200, 155, 74, 0.15), transparent 35%),
+    radial-gradient(circle at 86% 12%, rgba(31, 61, 43, 0.12), transparent 34%),
+    linear-gradient(180deg, #f7f1e8 0%, #efe8dc 100%);
   min-height: 100vh;
 }
 
+.bg-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(36px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+}
+
+.bg-glow-1 {
+  width: 320px;
+  height: 320px;
+  background: rgba(200, 155, 74, 0.25);
+  top: -140px;
+  left: -80px;
+  animation: drift 12s ease-in-out infinite;
+}
+
+.bg-glow-2 {
+  width: 280px;
+  height: 280px;
+  background: rgba(31, 61, 43, 0.18);
+  right: -90px;
+  top: 260px;
+  animation: drift 14s ease-in-out infinite reverse;
+}
+
+.landing > *:not(.bg-glow) {
+  position: relative;
+  z-index: 1;
+}
+
 .app-bar {
-  background: rgba(247, 241, 232, 0.95) !important;
-  border-bottom: 1px solid rgba(31, 61, 43, 0.08);
+  backdrop-filter: blur(10px);
+  background: linear-gradient(90deg, rgba(247, 241, 232, 0.95), rgba(247, 241, 232, 0.82)) !important;
+  border-bottom: 1px solid rgba(31, 61, 43, 0.09);
+  box-shadow: 0 10px 26px rgba(31, 61, 43, 0.06);
 }
 
 .brand-link {
   text-decoration: none;
   color: inherit;
+  transition: transform 0.3s ease;
+}
+
+.brand-link:hover {
+  transform: translateY(-2px);
 }
 
 .header-logo {
   object-fit: contain;
   flex-shrink: 0;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.16));
 }
 
 .footer-logo {
   object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.14));
 }
 
 .brand-name {
-  letter-spacing: 0.02em;
-  color: #1F3D2B;
+  letter-spacing: 0.08em;
+  color: #1f3d2b;
 }
 
 .urdu {
   font-size: 1rem;
-  color: #6B3F1D;
-  opacity: 0.9;
+  color: #6b3f1d;
+  opacity: 0.95;
 }
 
 .gap-nav {
-  gap: 1.25rem;
+  gap: 1.3rem;
 }
 
 .nav-link {
-  color: #1F3D2B;
+  color: #1f3d2b;
   text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: color 0.2s;
+  font-size: 0.94rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: color 0.25s ease, transform 0.25s ease;
 }
 
 .nav-link:hover,
 .footer-link:hover {
-  color: #C89B4A;
+  color: #c89b4a;
+  transform: translateY(-1px);
 }
 
 .nav-link:focus-visible,
 .footer-link:focus-visible {
-  outline: 2px solid #C89B4A;
+  outline: 2px solid #c89b4a;
   outline-offset: 2px;
+}
+
+.order-btn {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  box-shadow: 0 10px 20px rgba(200, 155, 74, 0.26);
 }
 
 .order-btn:focus-visible {
-  outline: 2px solid #1F3D2B;
+  outline: 2px solid #1f3d2b;
   outline-offset: 2px;
 }
 
-.text-deep-green { color: #1F3D2B; }
-.text-gold { color: #C89B4A; }
-.text-brown { color: #6B3F1D; }
+.text-deep-green { color: #1f3d2b; }
+.text-gold { color: #c89b4a; }
+.text-brown { color: #6b3f1d; }
 
 .hero {
-  min-height: 60vh;
+  min-height: 68vh;
   display: flex;
   align-items: center;
 }
 
+.hero-copy h1 {
+  letter-spacing: 0.01em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.hero-chip {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 20px rgba(200, 155, 74, 0.28);
+}
+
 .reveal {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(24px) scale(0.98);
+  transition: opacity 0.75s ease, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .hero-card {
-  border: 1px solid rgba(201, 155, 74, 0.3);
+  border: 1px solid rgba(200, 155, 74, 0.32);
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.66), rgba(247, 241, 232, 0.95)) !important;
+  box-shadow: 0 24px 44px rgba(31, 61, 43, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transition: transform 0.35s ease;
+}
+
+.hero-card:hover {
+  transform: translateY(-6px);
 }
 
 .hero-card-visual {
-  width: 120px;
-  height: 80px;
-  background: linear-gradient(135deg, #6B3F1D 0%, #C89B4A 50%, #1F3D2B 100%);
-  border-radius: 12px;
-  opacity: 0.6;
+  position: relative;
+  width: 170px;
+  height: 110px;
+  background: linear-gradient(135deg, #6b3f1d 0%, #c89b4a 56%, #1f3d2b 100%);
+  border-radius: 16px;
+  opacity: 0.82;
+  overflow: hidden;
+  box-shadow: inset 0 2px 10px rgba(255, 255, 255, 0.25);
+}
+
+.hero-card-blob {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.hero-card-blob-1 {
+  width: 54px;
+  height: 54px;
+  top: 14px;
+  left: 20px;
+}
+
+.hero-card-blob-2 {
+  width: 42px;
+  height: 42px;
+  bottom: 14px;
+  right: 18px;
 }
 
 .trust-strip {
-  background: rgba(31, 61, 43, 0.06);
+  background: linear-gradient(90deg, rgba(31, 61, 43, 0.08), rgba(31, 61, 43, 0.04));
+  border-top: 1px solid rgba(31, 61, 43, 0.08);
+  border-bottom: 1px solid rgba(31, 61, 43, 0.08);
 }
 
 .trust-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 2rem;
+  gap: 1.2rem;
   justify-items: center;
 }
 
 .trust-badge {
   text-align: center;
+  width: 100%;
+  max-width: 220px;
+  padding: 14px 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(200, 155, 74, 0.22);
+  background: rgba(255, 255, 255, 0.45);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.trust-badge:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 24px rgba(31, 61, 43, 0.12);
 }
 
 .trust-icon {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: rgba(201, 155, 74, 0.2);
+  background: radial-gradient(circle at 30% 30%, rgba(200, 155, 74, 0.42), rgba(200, 155, 74, 0.2));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -720,81 +837,114 @@ export default {
 }
 
 .section-alt {
-  background: rgba(31, 61, 43, 0.04);
+  background: linear-gradient(180deg, rgba(31, 61, 43, 0.05), rgba(31, 61, 43, 0.03));
 }
 
-.menu-card {
-  border: 1px solid rgba(201, 155, 74, 0.2);
-  transition: box-shadow 0.2s;
+.premium-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.5)) !important;
+  backdrop-filter: blur(3px);
+  border: 1px solid rgba(200, 155, 74, 0.22) !important;
+  box-shadow: 0 14px 28px rgba(31, 61, 43, 0.1);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-.menu-card:hover {
-  box-shadow: 0 8px 24px rgba(31, 61, 43, 0.12) !important;
+.premium-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 36px rgba(31, 61, 43, 0.16);
+}
+
+.menu-card,
+.deal-card,
+.review-card,
+.contact-form-card {
+  border-radius: 18px;
 }
 
 .menu-icon :deep(svg) {
   display: block;
 }
 
-.deal-card {
-  border: 1px solid rgba(201, 155, 74, 0.2);
-}
-
 .deal-card-highlight {
-  border: 2px solid #C89B4A;
-  background: rgba(201, 155, 74, 0.06) !important;
-}
-
-.review-card {
-  border: 1px solid rgba(31, 61, 43, 0.1);
+  border: 2px solid #c89b4a !important;
+  background: linear-gradient(180deg, rgba(200, 155, 74, 0.18), rgba(255, 255, 255, 0.54)) !important;
 }
 
 .step-block {
-  padding: 1rem;
+  padding: 1.2rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(200, 155, 74, 0.2);
+  background: rgba(255, 255, 255, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.step-block:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 26px rgba(31, 61, 43, 0.12);
 }
 
 .step-num {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: #C89B4A;
+  background: linear-gradient(160deg, #d4ad63, #c89b4a);
   color: #fff;
-  font-weight: bold;
+  font-weight: 700;
+  box-shadow: 0 8px 16px rgba(200, 155, 74, 0.35);
 }
 
 .faq-panels {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
 }
 
+.faq-panel {
+  border-radius: 14px !important;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
 .faq-panel :deep(.v-expansion-panel-title) {
-  font-weight: 600;
-  color: #1F3D2B;
+  font-weight: 700;
+  color: #1f3d2b;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.faq-panel :deep(.v-expansion-panel-text__wrapper) {
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .whatsapp-cta {
-  min-height: 280px;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.contact-form-card {
-  border: 1px solid rgba(31, 61, 43, 0.1);
+.premium-cta {
+  background: linear-gradient(160deg, #1f3d2b, #2f5a42) !important;
+  border: 1px solid rgba(200, 155, 74, 0.3);
+  box-shadow: 0 20px 34px rgba(31, 61, 43, 0.26);
 }
 
 .footer {
-  background: rgba(31, 61, 43, 0.08);
-  border-top: 1px solid rgba(31, 61, 43, 0.1);
+  background: linear-gradient(180deg, rgba(31, 61, 43, 0.12), rgba(31, 61, 43, 0.08));
+  border-top: 1px solid rgba(31, 61, 43, 0.12);
 }
 
 .footer-link {
-  color: #6B3F1D;
+  color: #6b3f1d;
   text-decoration: none;
   font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.menu .v-col,
+#deals .v-col,
+#reviews .v-col {
+  transition-delay: 60ms;
 }
 
 .visually-hidden {
@@ -807,5 +957,21 @@ export default {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+}
+
+@media (max-width: 960px) {
+  .hero {
+    min-height: 54vh;
+  }
+
+  .header-logo {
+    width: 68px;
+    height: 68px;
+  }
 }
 </style>
